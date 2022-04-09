@@ -90,20 +90,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
 	case CAPS_LOCK:
 	{
-		//bool caps_was_on = host_keyboard_leds() & (1 << USB_LED_CAPS_LOCK);
         if (record->event.pressed) {
             register_code(KC_CAPS);
-			CAPS_LOCK_FLASH_TIMER = timer_read32();
+			CAPS_LOCK_FLASH_TIMER = timer_read32(); // reset timer
         } else {
             unregister_code(KC_CAPS);
         }
-		
-		/*if (caps_was_on) {
-			//rgb_matrix_set_color(30, 0x00, 0x00, 0x00);
-			rgb_matrix_disable_noeeprom();
-		} else {
-			rgb_matrix_enable_noeeprom();
-		}*/
         break;
 	}
 	case HDR_TOGGLE:
@@ -118,15 +110,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         break;
     }
+
     return true;
 };
 
+// Fancy callback that allows overriding current RGB effect
 void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 	const uint8_t caps_key_idx = 30;
+	
 	const uint8_t game_mode_key_idx = 43;
 	const uint8_t task_mgr_key_idx = 57;
 	const uint8_t win_key_idx = 59;
 	const uint8_t mute_mic_key_idx = 63;
+	
+	const uint8_t dvorak_toggle_key_idx = 29;
 	
 	// Flash the caps lock key if enabled
     if (host_keyboard_led_state().caps_lock) {
@@ -136,7 +133,7 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 		} else if (timer_elapsed32(CAPS_LOCK_FLASH_TIMER) < 1500) {
 			RGB_MATRIX_INDICATOR_SET_COLOR(caps_key_idx, 0x80, 0x80, 0x80);
 		} else {
-			CAPS_LOCK_FLASH_TIMER = timer_read32();
+			CAPS_LOCK_FLASH_TIMER = timer_read32(); // reset timer
 		}
     }
 	
@@ -146,6 +143,11 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 		RGB_MATRIX_INDICATOR_SET_COLOR(task_mgr_key_idx, 0xFF, 0xFF, 0xFF);
 		RGB_MATRIX_INDICATOR_SET_COLOR(win_key_idx, 0xFF, 0xFF, 0xFF);
 		RGB_MATRIX_INDICATOR_SET_COLOR(mute_mic_key_idx, 0xFF, 0xFF, 0xFF);
+	}
+	
+	const uint32_t current_layer = biton32(layer_state);	
+	if (current_layer == 2 || current_layer == 3) {
+		RGB_MATRIX_INDICATOR_SET_COLOR(dvorak_toggle_key_idx, 0xFF, 0xFF, 0xFF);
 	}
 }
 
@@ -160,10 +162,26 @@ CAPS_LOCK,       KC_A,       KC_S,       KC_D,       KC_F,       KC_G,       KC_
   KC_LSFT,       KC_Z,       KC_X,       KC_C,       KC_V,       KC_B,       KC_N,       KC_M,    KC_COMM,      KC_DOT,    KC_SLSH,     KC_LSFT,      KC_UP,                TASK_MGR,
   KC_LCTL,    WIN_KEY,      MO(1),                                         KC_SPC,                             KC_RALT,   MUTE_MIC,     KC_LEFT,    KC_DOWN,    KC_RGHT),
   
-// Had an extra blank on 2nd to last, was missing blank for enter
+// Fn key on layer 0
 [1] = LAYOUT(
    KC_GRV,      KC_F1,      KC_F2,      KC_F3,      KC_F4,      KC_F5,      KC_F6,      KC_F7,      KC_F8,       KC_F9,     KC_F10,      KC_F11,     KC_F12,    _______,     _______,
-  _______,    _______,    RGB_VAI,    _______,    _______,    _______,    _______,    _______,    _______,     _______,    KC_PSCR,     _______,    KC_PAUS,    _______,     _______,
+  _______,    _______,    RGB_VAI,    _______,    _______,    _______,    _______,    _______,    _______,     _______,    KC_PSCR,     _______,    KC_PAUS,    _______,       TO(2),
+  _______,    RGB_RMOD,   RGB_VAD,    RGB_MOD,    _______,    _______,    _______,    _______,    _______,     _______,    _______,     _______,    _______,               GAME_MODE,
+  _______,    RGB_HUI,    RGB_HUD,    RGB_SPD,    RGB_SPI,    RGB_SAD,    RGB_SAI,    KC_MUTE,    KC_MPRV,     KC_MPLY,    KC_MNXT,     _______,    KC_PGUP,              HDR_TOGGLE,
+  _______,    _______,    _______,                                          RESET,                             _______,    _______,     KC_HOME,    KC_PGDN,     KC_END),
+
+// Dvorak
+[2] = LAYOUT(
+  KC_GESC,       KC_1,       KC_2,       KC_3,       KC_4,       KC_5,       KC_6,       KC_7,       KC_8,        KC_9,       KC_0,     KC_LBRC,    KC_RBRC,    KC_BSPC,      KC_INS,
+   KC_TAB,    KC_QUOT,    KC_COMM,     KC_DOT,       KC_P,       KC_Y,       KC_F,       KC_G,       KC_C,        KC_R,       KC_L,     KC_SLSH,     KC_EQL,    KC_BSLS,      KC_DEL,
+CAPS_LOCK,       KC_A,       KC_O,       KC_E,       KC_U,       KC_I,       KC_D,       KC_H,       KC_T,        KC_N,       KC_S,     KC_MINS,     KC_ENT,                  F5_KEY,
+  KC_LSFT,    KC_SCLN,       KC_Q,       KC_J,       KC_K,       KC_X,       KC_B,       KC_M,       KC_W,        KC_V,       KC_Z,     KC_LSFT,      KC_UP,                TASK_MGR,
+  KC_LCTL,    WIN_KEY,      MO(3),                                         KC_SPC,                             KC_RALT,   MUTE_MIC,     KC_LEFT,    KC_DOWN,    KC_RGHT),
+  
+// Fn key on layer 2
+[3] = LAYOUT(
+   KC_GRV,      KC_F1,      KC_F2,      KC_F3,      KC_F4,      KC_F5,      KC_F6,      KC_F7,      KC_F8,       KC_F9,     KC_F10,      KC_F11,     KC_F12,    _______,     _______,
+  _______,    _______,    RGB_VAI,    _______,    _______,    _______,    _______,    _______,    _______,     _______,    KC_PSCR,     _______,    KC_PAUS,    _______,       TO(0),
   _______,    RGB_RMOD,   RGB_VAD,    RGB_MOD,    _______,    _______,    _______,    _______,    _______,     _______,    _______,     _______,    _______,               GAME_MODE,
   _______,    RGB_HUI,    RGB_HUD,    RGB_SPD,    RGB_SPI,    RGB_SAD,    RGB_SAI,    KC_MUTE,    KC_MPRV,     KC_MPLY,    KC_MNXT,     _______,    KC_PGUP,              HDR_TOGGLE,
   _______,    _______,    _______,                                          RESET,                             _______,    _______,     KC_HOME,    KC_PGDN,     KC_END)
@@ -185,7 +203,6 @@ CAPS_LOCK,       KC_A,       KC_S,       KC_D,       KC_F,       KC_G,       KC_
   _______,  _______,  _______,                                RESET,                                  _______,  _______,  RGB_RMOD,  RGB_VAD,  RGB_MOD),
 
 
-// Default layout 2 probably wrong, copy from one of the layouts I modified
 [2] = LAYOUT(
   _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,   _______,  _______,
   _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,   _______,  _______,
