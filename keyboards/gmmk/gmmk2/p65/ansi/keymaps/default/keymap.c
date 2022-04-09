@@ -145,6 +145,7 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 		RGB_MATRIX_INDICATOR_SET_COLOR(mute_mic_key_idx, 0xFF, 0xFF, 0xFF);
 	}
 	
+	// Turn Dvorak toggle key white if enabled
 	const uint32_t current_layer = biton32(layer_state);	
 	if (current_layer == 2 || current_layer == 3) {
 		RGB_MATRIX_INDICATOR_SET_COLOR(dvorak_toggle_key_idx, 0xFF, 0xFF, 0xFF);
@@ -155,38 +156,40 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 // The underscores don't mean anything - you can have a layer called STUFF or any other name.
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+// Default QWERTY layer
 [0] = LAYOUT(
   KC_GESC,       KC_1,       KC_2,       KC_3,       KC_4,       KC_5,       KC_6,       KC_7,       KC_8,        KC_9,       KC_0,     KC_MINS,     KC_EQL,    KC_BSPC,      KC_INS,
    KC_TAB,       KC_Q,       KC_W,       KC_E,       KC_R,       KC_T,       KC_Y,       KC_U,       KC_I,        KC_O,       KC_P,     KC_LBRC,    KC_RBRC,    KC_BSLS,      KC_DEL,
 CAPS_LOCK,       KC_A,       KC_S,       KC_D,       KC_F,       KC_G,       KC_H,       KC_J,       KC_K,        KC_L,    KC_SCLN,     KC_QUOT,     KC_ENT,                  F5_KEY,
   KC_LSFT,       KC_Z,       KC_X,       KC_C,       KC_V,       KC_B,       KC_N,       KC_M,    KC_COMM,      KC_DOT,    KC_SLSH,     KC_LSFT,      KC_UP,                TASK_MGR,
-  KC_LCTL,    WIN_KEY,      MO(1),                                         KC_SPC,                             KC_RALT,   MUTE_MIC,     KC_LEFT,    KC_DOWN,    KC_RGHT),
+  KC_LCTL,    WIN_KEY,      MO(1), /*switch to layer 1 while held*/        KC_SPC,                             KC_RALT,   MUTE_MIC,     KC_LEFT,    KC_DOWN,    KC_RGHT),
   
-// Fn key on layer 0
+// Fn key when on layer 0 (QWERTY)
 [1] = LAYOUT(
    KC_GRV,      KC_F1,      KC_F2,      KC_F3,      KC_F4,      KC_F5,      KC_F6,      KC_F7,      KC_F8,       KC_F9,     KC_F10,      KC_F11,     KC_F12,    _______,     _______,
-  _______,    _______,    RGB_VAI,    _______,    _______,    _______,    _______,    _______,    _______,     _______,    KC_PSCR,     _______,    KC_PAUS,    _______,       TO(2),
+  _______,    _______,    RGB_VAI,    _______,    _______,    _______,    _______,    _______,    _______,     _______,    KC_PSCR,     _______,    KC_PAUS,    _______,       TO(2), /*switch to layer 2*/
   _______,    RGB_RMOD,   RGB_VAD,    RGB_MOD,    _______,    _______,    _______,    _______,    _______,     _______,    _______,     _______,    _______,               GAME_MODE,
   _______,    RGB_HUI,    RGB_HUD,    RGB_SPD,    RGB_SPI,    RGB_SAD,    RGB_SAI,    KC_MUTE,    KC_MPRV,     KC_MPLY,    KC_MNXT,     _______,    KC_PGUP,              HDR_TOGGLE,
   _______,    _______,    _______,                                          RESET,                             _______,    _______,     KC_HOME,    KC_PGDN,     KC_END),
 
-// Dvorak
+// Dvorak layout
 [2] = LAYOUT(
   KC_GESC,       KC_1,       KC_2,       KC_3,       KC_4,       KC_5,       KC_6,       KC_7,       KC_8,        KC_9,       KC_0,     KC_LBRC,    KC_RBRC,    KC_BSPC,      KC_INS,
    KC_TAB,    KC_QUOT,    KC_COMM,     KC_DOT,       KC_P,       KC_Y,       KC_F,       KC_G,       KC_C,        KC_R,       KC_L,     KC_SLSH,     KC_EQL,    KC_BSLS,      KC_DEL,
 CAPS_LOCK,       KC_A,       KC_O,       KC_E,       KC_U,       KC_I,       KC_D,       KC_H,       KC_T,        KC_N,       KC_S,     KC_MINS,     KC_ENT,                  F5_KEY,
   KC_LSFT,    KC_SCLN,       KC_Q,       KC_J,       KC_K,       KC_X,       KC_B,       KC_M,       KC_W,        KC_V,       KC_Z,     KC_LSFT,      KC_UP,                TASK_MGR,
-  KC_LCTL,    WIN_KEY,      MO(3),                                         KC_SPC,                             KC_RALT,   MUTE_MIC,     KC_LEFT,    KC_DOWN,    KC_RGHT),
+  KC_LCTL,    WIN_KEY,      MO(3), /*switch to layer 3 while held*/        KC_SPC,                             KC_RALT,   MUTE_MIC,     KC_LEFT,    KC_DOWN,    KC_RGHT),
   
-// Fn key on layer 2
+// Fn key when on layer 2 (Dvorak)
 [3] = LAYOUT(
    KC_GRV,      KC_F1,      KC_F2,      KC_F3,      KC_F4,      KC_F5,      KC_F6,      KC_F7,      KC_F8,       KC_F9,     KC_F10,      KC_F11,     KC_F12,    _______,     _______,
-  _______,    _______,    RGB_VAI,    _______,    _______,    _______,    _______,    _______,    _______,     _______,    KC_PSCR,     _______,    KC_PAUS,    _______,       TO(0),
+  _______,    _______,    RGB_VAI,    _______,    _______,    _______,    _______,    _______,    _______,     _______,    KC_PSCR,     _______,    KC_PAUS,    _______,       TO(0), /*switch to layer 0*/
   _______,    RGB_RMOD,   RGB_VAD,    RGB_MOD,    _______,    _______,    _______,    _______,    _______,     _______,    _______,     _______,    _______,               GAME_MODE,
   _______,    RGB_HUI,    RGB_HUD,    RGB_SPD,    RGB_SPI,    RGB_SAD,    RGB_SAI,    KC_MUTE,    KC_MPRV,     KC_MPLY,    KC_MNXT,     _______,    KC_PGUP,              HDR_TOGGLE,
   _______,    _______,    _______,                                          RESET,                             _______,    _______,     KC_HOME,    KC_PGDN,     KC_END)
 };
   
+// Original layouts
 /*
 [0] = LAYOUT(
   KC_GESC,  KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,  KC_DEL,
@@ -201,7 +204,6 @@ CAPS_LOCK,       KC_A,       KC_O,       KC_E,       KC_U,       KC_I,       KC_
   _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,             _______,
   _______,  _______,  RGB_HUI,  RGB_HUD,  RGB_SPD,  RGB_SPI,  KC_MUTE,  KC_VOLU,  KC_VOLD,  KC_MPRV,  KC_MPLY,  KC_MNXT,  _______,   RGB_VAI,  KC_HOME,
   _______,  _______,  _______,                                RESET,                                  _______,  _______,  RGB_RMOD,  RGB_VAD,  RGB_MOD),
-
 
 [2] = LAYOUT(
   _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,   _______,  _______,
