@@ -86,3 +86,9 @@
 
 /* Force NKRO on boot up regardless of the setting saved in the EEPROM (uncomment to enable it) */
 #define FORCE_NKRO
+
+// mflagg Any tap of an LT button is considered a "hold" if any another key is pressed
+#define HOLD_ON_OTHER_KEY_PRESS
+
+// mflagg reduce tap time LT considers a tap (default 200ms)
+//#define TAPPING_TERM 150
