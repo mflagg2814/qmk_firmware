@@ -43,6 +43,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 	case GAME_MODE:
         if (record->event.pressed) {
             IN_GAME_MODE = !IN_GAME_MODE;
+			layer_move( _QWERTY ); // todo toggle back to old layout
         }
         break;
 	/*case F5_KEY:
