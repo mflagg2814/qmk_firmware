@@ -16,7 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include QMK_KEYBOARD_H
 
-#define _COLEMAK_DH        0
+#define _COLEMAK_DH        0 // keymap 0 is always the default on boot
 #define _FN_FOR_COLEMAK_DH 1
 #define _QWERTY            2
 #define _FN_FOR_QWERTY     3
@@ -38,15 +38,18 @@ enum custom_keycodes {
 	//HDR_TOGGLE
 };
 
+// Processing for custom keycodes
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
 	case GAME_MODE:
+		// Toggle game mode and switch to QWERTY
         if (record->event.pressed) {
             IN_GAME_MODE = !IN_GAME_MODE;
-			layer_move( IN_GAME_MODE ? _QWERTY :_COLEMAK_DH ); // todo toggle back to old layout
+			layer_move( IN_GAME_MODE ? _QWERTY :_COLEMAK_DH ); // todo save and toggle back to old layout
         }
         break;
 	/*case F5_KEY:
+		// F5 unless in game mode
 		if (IN_GAME_MODE) {
 			break;
 		}
@@ -58,6 +61,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         break;*/
     case MUTE_MIC:
+		// Macro for Teams mute/unmute
 		if (IN_GAME_MODE) {
 			break;
 		}
@@ -73,6 +77,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         break;
 	/*case TASK_MGR:
+		// Macro to open task manager
 		if (IN_GAME_MODE) {
 			break;
 		}
@@ -88,6 +93,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         break;*/
 	case WIN_KEY:
+		// Ignore Windows key in game mode
 		if (IN_GAME_MODE) {
 			break;
 		}
@@ -100,6 +106,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
 	case CAPS_LOCK:
 	{
+		// Make the caps lock key blink when active
         if (record->event.pressed) {
             register_code(KC_CAPS);
 			CAPS_LOCK_FLASH_TIMER = timer_read32(); // reset timer
@@ -109,6 +116,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
 	}
 	/*case HDR_TOGGLE:
+		// Macro to enable HDR mode in Windows
         if (record->event.pressed) {
             register_code(KC_LGUI);
             register_code(KC_LALT);
@@ -155,7 +163,7 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 		RGB_MATRIX_INDICATOR_SET_COLOR(mute_mic_key_idx, 0xFF, 0xFF, 0xFF);
 	}
 	
-	// Turn Dvorak toggle key white if enabled
+	// Turn QWERTY toggle key white if in QWERTY mode
 	const uint32_t current_layer = biton32(layer_state);	
 	if (current_layer == _QWERTY || current_layer == _FN_FOR_QWERTY) {
 		RGB_MATRIX_INDICATOR_SET_COLOR(qwerty_toggle_key_idx, 0xFF, 0xFF, 0xFF);
@@ -166,12 +174,25 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 // The underscores don't mean anything - you can have a layer called STUFF or any other name.
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-// Default layer
+// Special keys:
+// KC_GESC: Escape, but (shift + esc = ~) and (win + esc = `)
+//          Add "#define GRAVE_ESC_ALT_OVERRIDE" and "#define GRAVE_ESC_CTRL_OVERRIDE"
+//          to config.h to always emit Esc if Alt or Ctrl are pressed
+//          so shortcuts like Ctrl + Shift + Esc work as expected
+// KC_LSPO / KC_RSPC: Shift if held, ( or ) if tapped
+// LT(1, KC_F5): Switches to layer 1 if held (fn key) or presses F5 if tapped.
+//               Use in conjunction with "#define HOLD_ON_OTHER_KEY_PRESS" in
+//               config.h to always switch to layer 1 if any other key is pressed,
+//				 even if it's pressed quickly
 
-// ANSI version with tilt mod (relocates Z)
-// Colemak-mod-DHk
+// NKRO: Add "#define FORCE_NKRO" to config.h or NKRO doesn't work
+
+// ANSI version of Colemak DHk with tilt mod (relocates Z)
 // Using caps lock as backspace like vanilla colemak
+// Colemak-mod-DHk
 // https://colemakmods.github.io/mod-dh/keyboards.html
+
+// Default layer
 [_COLEMAK_DH] = LAYOUT(
   KC_GESC,       KC_1,       KC_2,       KC_3,       KC_4,       KC_5,       KC_6,       KC_7,       KC_8,        KC_9,       KC_0,     KC_MINS,     KC_EQL,    KC_BSPC,      KC_INS,
    KC_TAB,       KC_Q,       KC_W,       KC_F,       KC_P,       KC_B,       KC_J,       KC_L,       KC_U,        KC_Y,    KC_SCLN,     KC_LBRC,    KC_RBRC,    KC_BSLS,      KC_DEL,
@@ -200,6 +221,8 @@ CAPS_LOCK,       KC_A,       KC_S,       KC_D,       KC_F,       KC_G,       KC_
   _______,    RGB_HUI,    RGB_HUD,    RGB_SPD,    RGB_SPI,    RGB_SAD,    RGB_SAI,    KC_MUTE,    KC_MPRV,     KC_MPLY,    KC_MNXT,     _______,    KC_PGUP,                 _______,
   _______,    _______,    _______,                                          RESET,                             _______,    _______,     KC_HOME,    KC_PGDN,     KC_END),
 
+// Below currently unused but defined
+// Standard colemak
 [_COLEMAK] = LAYOUT(
   KC_GESC,       KC_1,       KC_2,       KC_3,       KC_4,       KC_5,       KC_6,       KC_7,       KC_8,        KC_9,       KC_0,     KC_MINS,     KC_EQL,    KC_BSPC,      KC_INS,
    KC_TAB,       KC_Q,       KC_W,       KC_F,       KC_P,       KC_G,       KC_J,       KC_L,       KC_U,        KC_Y,    KC_SCLN,     KC_LBRC,    KC_RBRC,    KC_BSLS,      KC_DEL,
@@ -214,6 +237,7 @@ CAPS_LOCK,       KC_A,       KC_S,       KC_D,       KC_F,       KC_G,       KC_
   _______,    RGB_HUI,    RGB_HUD,    RGB_SPD,    RGB_SPI,    RGB_SAD,    RGB_SAI,    KC_MUTE,    KC_MPRV,     KC_MPLY,    KC_MNXT,     _______,    KC_PGUP,                 _______,
   _______,    _______,    _______,                                          RESET,                             _______,    _______,     KC_HOME,    KC_PGDN,    KC_END),
 
+// Standard dvorak
 [_DVORAK] = LAYOUT(
   KC_GESC,       KC_1,       KC_2,       KC_3,       KC_4,       KC_5,       KC_6,       KC_7,       KC_8,        KC_9,       KC_0,     KC_LBRC,    KC_RBRC,    KC_BSPC,      KC_INS,
    KC_TAB,    KC_QUOT,    KC_COMM,     KC_DOT,       KC_P,       KC_Y,       KC_F,       KC_G,       KC_C,        KC_R,       KC_L,     KC_SLSH,     KC_EQL,    KC_BSLS,      KC_DEL,
@@ -229,7 +253,7 @@ CAPS_LOCK,       KC_A,       KC_O,       KC_E,       KC_U,       KC_I,       KC_
   _______,    _______,    _______,                                          RESET,                             _______,    _______,     KC_HOME,    KC_PGDN,     KC_END)
 };
   
-// Original layouts
+// Original-ish layouts
 /*
 [0] = LAYOUT(
   KC_GESC,  KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,  KC_DEL,
