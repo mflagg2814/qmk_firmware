@@ -121,6 +121,15 @@ void AW20216_init(pin_t cs_pin, pin_t en_pin) {
 void AW20216_set_color(int index, uint8_t red, uint8_t green, uint8_t blue) {
     aw_led led;
     memcpy_P(&led, (&g_aw_leds[index]), sizeof(led));
+	
+	// WTF
+	// Red value for esc. key (idx 0) is derived from all 
+	// bytes past the last physical LED index
+	if (index > 86) {
+		red = g_pwm_buffer[led.driver][g_aw_leds[0].r];
+		green = g_pwm_buffer[led.driver][g_aw_leds[0].r];
+		blue = g_pwm_buffer[led.driver][g_aw_leds[0].r];
+	}
 
     g_pwm_buffer[led.driver][led.r]          = red;
     g_pwm_buffer[led.driver][led.g]          = green;
