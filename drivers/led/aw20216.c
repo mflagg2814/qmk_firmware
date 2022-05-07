@@ -46,10 +46,12 @@
 #define AW_PWM_REGISTER_COUNT 216
 
 #ifndef AW_SCALING_MAX
+     // Glorious used this on GMMK Pro w/ the same LED driver (was 150)
 #    define AW_SCALING_MAX 255
 #endif
 
 #ifndef AW_GLOBAL_CURRENT_MAX
+     // Glorious used this on GMMK Pro w/ the same LED driver (was 150)
 #    define AW_GLOBAL_CURRENT_MAX 175
 #endif
 
