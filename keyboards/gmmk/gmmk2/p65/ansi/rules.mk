@@ -16,6 +16,7 @@ COMMAND_ENABLE = no          # Commands for debug and configuration.
 SLEEP_LED_ENABLE = no        # Breathing sleep LED during USB suspend.
 # if this doesn't work, see here: https://github.com/tmk/tmk_keyboard/wiki/FAQ#nkro-doesnt-work
 NKRO_ENABLE = yes            # USB Nkey Rollover.
+DEBOUNCE_TYPE = sym_eager_pk # Per-key debounce with immediate response
 BACKLIGHT_ENABLE = no        # Enable keyboard backlight functionality.
 RGBLIGHT_ENABLE = no         # Enable keyboard RGB underglow.
 BLUETOOTH_ENABLE = no        # Enable Bluetooth.
