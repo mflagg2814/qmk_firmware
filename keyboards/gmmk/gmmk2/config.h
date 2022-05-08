@@ -77,9 +77,11 @@
 #define ENABLE_RGB_MATRIX_SOLID_SPLASH
 #define ENABLE_RGB_MATRIX_SOLID_MULTISPLASH
 
+/* 1 kHz polling interval */
+#define USB_POLLING_INTERVAL_MS 1
 
 /* Send up to 4 key press events per scan */
-#define QMK_KEYS_PER_SCAN 4
+#define QMK_KEYS_PER_SCAN 12
 
 /* Set debounce time to 5ms */
 #define DEBOUNCE 5
@@ -87,8 +89,5 @@
 /* Force NKRO on boot up regardless of the setting saved in the EEPROM (uncomment to enable it) */
 #define FORCE_NKRO
 
-// mflagg Any tap of an LT button is considered a "hold" if any another key is pressed
+/* Any tap of an LT button is considered a "hold" if any another key is pressed */
 #define HOLD_ON_OTHER_KEY_PRESS
-
-// mflagg reduce tap time LT considers a tap (default 200ms)
-//#define TAPPING_TERM 150
