@@ -28,6 +28,9 @@
 #define PRODUCT_ID 0x5044
 #define MANUFACTURER Glorious
 
+//#define RGB_MATRIX_FRAMEBUFFER_EFFECTS
+//#define RGB_MATRIX_KEYPRESSES
+
 // RGB Matrix Animation modes. Explicitly enabled
 // For full list of effects, see:
 // https://docs.qmk.fm/#/feature_rgb_matrix?id=rgb-matrix-effects
@@ -83,8 +86,8 @@
 /* Send up to 4 key press events per scan */
 #define QMK_KEYS_PER_SCAN 12
 
-/* Set debounce time to 5ms */
-#define DEBOUNCE 5
+/* Set debounce time to 6ms */
+#define DEBOUNCE 6
 
 /* Force NKRO on boot up regardless of the setting saved in the EEPROM (uncomment to enable it) */
 #define FORCE_NKRO
