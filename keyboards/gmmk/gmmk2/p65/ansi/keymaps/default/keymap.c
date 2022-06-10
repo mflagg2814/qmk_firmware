@@ -37,7 +37,7 @@ enum custom_keycodes {
 	//TASK_MGR,
 	WIN_KEY,
 	CAPS_LOCK,
-	//HDR_TOGGLE
+	HDR_TOGGLE
 };
 
 // Processing for custom keycodes
@@ -117,7 +117,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         break;
 	}
-	/*case HDR_TOGGLE:
+	case HDR_TOGGLE:
+		if (IN_GAME_MODE) {
+			break;
+		}
+	
 		// Macro to enable HDR mode in Windows
         if (record->event.pressed) {
             register_code(KC_LGUI);
@@ -128,7 +132,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             unregister_code(KC_LALT);
             unregister_code(KC_B);
         }
-        break;*/
+        break;
     }
 
     return true;
@@ -138,6 +142,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 	const uint8_t caps_key_idx = 30;
 	
+	const uint8_t hdr_key_idx = 29;
 	const uint8_t game_mode_key_idx = 43;
 	//const uint8_t task_mgr_key_idx = 57;
 	const uint8_t win_key_idx = 59;
@@ -159,6 +164,7 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 	
 	// Turn game mode toggle key and affected keys white if enabled
 	if (IN_GAME_MODE) {
+		RGB_MATRIX_INDICATOR_SET_COLOR(hdr_key_idx, 0xFF, 0xFF, 0xFF);
 		RGB_MATRIX_INDICATOR_SET_COLOR(game_mode_key_idx, 0xFF, 0xFF, 0xFF);
 		//RGB_MATRIX_INDICATOR_SET_COLOR(task_mgr_key_idx, 0xFF, 0xFF, 0xFF);
 		RGB_MATRIX_INDICATOR_SET_COLOR(win_key_idx, 0xFF, 0xFF, 0xFF);
@@ -204,7 +210,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [_FN_FOR_COLEMAK_DHk] = LAYOUT(
    KC_GRV,      KC_F1,      KC_F2,      KC_F3,      KC_F4,      KC_F5,      KC_F6,      KC_F7,      KC_F8,       KC_F9,     KC_F10,      KC_F11,     KC_F12,    _______,       TO(2), /*switch to layer 2*/
-  _______,    _______,    RGB_VAI,    _______,    _______,    _______,    _______,    _______,    _______,     _______,    KC_PSCR,     _______,    KC_PAUS,    _______,     _______,
+  _______,    _______,    RGB_VAI,    _______,    _______,    _______,    _______,    _______,    _______,     _______,    KC_PSCR,     _______,    KC_PAUS,    _______,  HDR_TOGGLE,
   _______,    RGB_RMOD,   RGB_VAD,    RGB_MOD,    _______,    _______,    _______,    _______,    _______,     _______,    _______,     _______,    _______,               GAME_MODE,
   _______,    RGB_HUI,    RGB_HUD,    RGB_SPD,    RGB_SPI,    RGB_SAD,    RGB_SAI,    KC_MUTE,    KC_MPRV,     KC_MPLY,    KC_MNXT,     _______,    KC_PGUP,                 _______,
   _______,    _______,    _______,                                          RESET,                             _______,    _______,     KC_HOME,    KC_PGDN,    KC_END),     
@@ -219,7 +225,7 @@ CAPS_LOCK,       KC_A,       KC_S,       KC_D,       KC_F,       KC_G,       KC_
   
 [_FN_FOR_QWERTY] = LAYOUT(
    KC_GRV,      KC_F1,      KC_F2,      KC_F3,      KC_F4,      KC_F5,      KC_F6,      KC_F7,      KC_F8,       KC_F9,     KC_F10,      KC_F11,     KC_F12,    _______,       TO(0), /*switch to layer 0*/
-  _______,    _______,    RGB_VAI,    _______,    _______,    _______,    _______,    _______,    _______,     _______,    KC_PSCR,     _______,    KC_PAUS,    _______,     _______,
+  _______,    _______,    RGB_VAI,    _______,    _______,    _______,    _______,    _______,    _______,     _______,    KC_PSCR,     _______,    KC_PAUS,    _______,  HDR_TOGGLE,
   _______,    RGB_RMOD,   RGB_VAD,    RGB_MOD,    _______,    _______,    _______,    _______,    _______,     _______,    _______,     _______,    _______,               GAME_MODE,
   _______,    RGB_HUI,    RGB_HUD,    RGB_SPD,    RGB_SPI,    RGB_SAD,    RGB_SAI,    KC_MUTE,    KC_MPRV,     KC_MPLY,    KC_MNXT,     _______,    KC_PGUP,                 _______,
   _______,    _______,    _______,                                          RESET,                             _______,    _______,     KC_HOME,    KC_PGDN,     KC_END),
