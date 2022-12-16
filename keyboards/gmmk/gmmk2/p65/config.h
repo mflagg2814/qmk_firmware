@@ -110,8 +110,8 @@
 #define ENABLE_RGB_MATRIX_SOLID_SPLASH
 #define ENABLE_RGB_MATRIX_SOLID_MULTISPLASH
 
-/* Set debounce time to 20ms */
-#define DEBOUNCE 20
+/* Set debounce time in ms */
+#define DEBOUNCE 8
 
 /* 1 kHz polling interval */
 #define USB_POLLING_INTERVAL_MS 1
@@ -122,6 +122,9 @@
 /* Send "ESC" if ALT or CTRL are also held */
 #define GRAVE_ESC_ALT_OVERRIDE
 #define GRAVE_ESC_CTRL_OVERRIDE
+
+/* Tap both shift keys to type the next word in all caps */
+//#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
 
 /* Force NKRO on boot up regardless of the setting saved in the EEPROM (uncomment to enable it) */
 #define FORCE_NKRO
