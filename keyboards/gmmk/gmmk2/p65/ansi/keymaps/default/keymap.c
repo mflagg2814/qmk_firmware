@@ -189,7 +189,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //          Add "#define GRAVE_ESC_ALT_OVERRIDE" and "#define GRAVE_ESC_CTRL_OVERRIDE"
 //          to config.h to always emit Esc if Alt or Ctrl are pressed
 //          so shortcuts like Ctrl + Shift + Esc work as expected
-// KC_LSPO / KC_RSPC: Shift if held, ( or ) if tapped
+// SC_LSPO / SC_RSPC: Shift if held, ( or ) if tapped
 // LT(1, KC_F5): Switches to layer 1 if held (fn key) or presses F5 if tapped.
 //               Use in conjunction with "#define HOLD_ON_OTHER_KEY_PRESS" in
 //               config.h to always switch to layer 1 if any other key is pressed,
@@ -207,7 +207,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   QK_GESC,       KC_1,       KC_2,       KC_3,       KC_4,       KC_5,       KC_6,       KC_7,       KC_8,        KC_9,       KC_0,     KC_MINS,     KC_EQL,    KC_BSPC,      KC_INS,
    KC_TAB,       KC_Q,       KC_W,       KC_F,       KC_P,       KC_B,       KC_J,       KC_L,       KC_U,        KC_Y,    KC_SCLN,     KC_LBRC,    KC_RBRC,    KC_BSLS,      KC_DEL,
   KC_BSPC,       KC_A,       KC_R,       KC_S,       KC_T,       KC_G,       KC_K,       KC_N,       KC_E,        KC_I,       KC_O,     KC_QUOT,     KC_ENT,                  KC_END,
-  KC_LSPO,       KC_X,       KC_C,       KC_D,       KC_V,       KC_Z,       KC_M,       KC_H,    KC_COMM,      KC_DOT,    KC_SLSH,     KC_RSPC,      KC_UP,            LT(1, KC_F5), /*Fn (layer 1) if held or pressed in combo with another key. F5 if tapped.*/
+  SC_LSPO,       KC_X,       KC_C,       KC_D,       KC_V,       KC_Z,       KC_M,       KC_H,    KC_COMM,      KC_DOT,    KC_SLSH,     SC_RSPC,      KC_UP,            LT(1, KC_F5), /*Fn (layer 1) if held or pressed in combo with another key. F5 if tapped.*/
   KC_LCTL,    WIN_KEY,       KC_LALT,                                      KC_SPC,                            MUTE_MIC,    KC_RCTL,     KC_LEFT,    KC_DOWN,    KC_RGHT),
 
 [_FN_FOR_COLEMAK_DHk] = LAYOUT(
@@ -215,14 +215,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______,    _______,    RGB_VAI,    _______,    _______,    _______,    _______,    _______,    _______,     _______,    KC_PSCR,     _______,    KC_PAUS,    _______,  HDR_TOGGLE,
   _______,    RGB_RMOD,   RGB_VAD,    RGB_MOD,    _______,    _______,    _______,    _______,    _______,     _______,    _______,     _______,    _______,               GAME_MODE,
   _______,    RGB_HUI,    RGB_HUD,    RGB_SPD,    RGB_SPI,    RGB_SAD,    RGB_SAI,    KC_MUTE,    KC_MPRV,     KC_MPLY,    KC_MNXT,     _______,    KC_PGUP,                 _______,
-  _______,    _______,    _______,                                          RESET,                             _______,    _______,     KC_HOME,    KC_PGDN,    KC_END),     
+  _______,    _______,    _______,                                  QK_BOOTLOADER,                             _______,    _______,     KC_HOME,    KC_PGDN,    KC_END),     
 
 // QWERTY
 [_QWERTY] = LAYOUT(
   QK_GESC,       KC_1,       KC_2,       KC_3,       KC_4,       KC_5,       KC_6,       KC_7,       KC_8,        KC_9,       KC_0,     KC_MINS,     KC_EQL,    KC_BSPC,      KC_INS,
    KC_TAB,       KC_Q,       KC_W,       KC_E,       KC_R,       KC_T,       KC_Y,       KC_U,       KC_I,        KC_O,       KC_P,     KC_LBRC,    KC_RBRC,    KC_BSLS,      KC_DEL,
 CAPS_LOCK,       KC_A,       KC_S,       KC_D,       KC_F,       KC_G,       KC_H,       KC_J,       KC_K,        KC_L,    KC_SCLN,     KC_QUOT,     KC_ENT,                  KC_END,
-  KC_LSPO,       KC_Z,       KC_X,       KC_C,       KC_V,       KC_B,       KC_N,       KC_M,    KC_COMM,      KC_DOT,    KC_SLSH,     KC_RSPC,      KC_UP,            LT(3, KC_F5), /*Fn (layer 3) if held or pressed in combo with another key. F5 if tapped.*/
+  SC_LSPO,       KC_Z,       KC_X,       KC_C,       KC_V,       KC_B,       KC_N,       KC_M,    KC_COMM,      KC_DOT,    KC_SLSH,     SC_RSPC,      KC_UP,            LT(3, KC_F5), /*Fn (layer 3) if held or pressed in combo with another key. F5 if tapped.*/
   KC_LCTL,    WIN_KEY,       KC_LALT,                                      KC_SPC,                            MUTE_MIC,    KC_RCTL,     KC_LEFT,    KC_DOWN,    KC_RGHT),
   
 [_FN_FOR_QWERTY] = LAYOUT(
@@ -230,7 +230,7 @@ CAPS_LOCK,       KC_A,       KC_S,       KC_D,       KC_F,       KC_G,       KC_
   _______,    _______,    RGB_VAI,    _______,    _______,    _______,    _______,    _______,    _______,     _______,    KC_PSCR,     _______,    KC_PAUS,    _______,  HDR_TOGGLE,
   _______,    RGB_RMOD,   RGB_VAD,    RGB_MOD,    _______,    _______,    _______,    _______,    _______,     _______,    _______,     _______,    _______,               GAME_MODE,
   _______,    RGB_HUI,    RGB_HUD,    RGB_SPD,    RGB_SPI,    RGB_SAD,    RGB_SAI,    KC_MUTE,    KC_MPRV,     KC_MPLY,    KC_MNXT,     _______,    KC_PGUP,                 _______,
-  _______,    _______,    _______,                                          RESET,                             _______,    _______,     KC_HOME,    KC_PGDN,     KC_END),
+  _______,    _______,    _______,                                  QK_BOOTLOADER,                             _______,    _______,     KC_HOME,    KC_PGDN,     KC_END),
 
 // Below currently unused but defined
 // Standard colemak
@@ -238,7 +238,7 @@ CAPS_LOCK,       KC_A,       KC_S,       KC_D,       KC_F,       KC_G,       KC_
   QK_GESC,       KC_1,       KC_2,       KC_3,       KC_4,       KC_5,       KC_6,       KC_7,       KC_8,        KC_9,       KC_0,     KC_MINS,     KC_EQL,    KC_BSPC,      KC_INS,
    KC_TAB,       KC_Q,       KC_W,       KC_F,       KC_P,       KC_G,       KC_J,       KC_L,       KC_U,        KC_Y,    KC_SCLN,     KC_LBRC,    KC_RBRC,    KC_BSLS,      KC_DEL,
   KC_BSPC,       KC_A,       KC_R,       KC_S,       KC_T,       KC_D,       KC_H,       KC_N,       KC_E,        KC_I,       KC_O,     KC_QUOT,     KC_ENT,                  KC_END,
-  KC_LSPO,       KC_Z,       KC_X,       KC_C,       KC_V,       KC_B,       KC_K,       KC_M,    KC_COMM,      KC_DOT,    KC_SLSH,     KC_RSPC,      KC_UP,            LT(5, KC_F5), /*Fn (layer 5) if held or pressed in combo with another key. F5 if tapped.*/
+  SC_LSPO,       KC_Z,       KC_X,       KC_C,       KC_V,       KC_B,       KC_K,       KC_M,    KC_COMM,      KC_DOT,    KC_SLSH,     SC_RSPC,      KC_UP,            LT(5, KC_F5), /*Fn (layer 5) if held or pressed in combo with another key. F5 if tapped.*/
   KC_LCTL,    WIN_KEY,       KC_LALT,                                      KC_SPC,                            MUTE_MIC,    KC_RCTL,     KC_LEFT,    KC_DOWN,    KC_RGHT),
 
 [_FN_FOR_COLEMAK] = LAYOUT(
@@ -246,14 +246,14 @@ CAPS_LOCK,       KC_A,       KC_S,       KC_D,       KC_F,       KC_G,       KC_
   _______,    _______,    RGB_VAI,    _______,    _______,    _______,    _______,    _______,    _______,     _______,    KC_PSCR,     _______,    KC_PAUS,    _______,     _______,
   _______,    RGB_RMOD,   RGB_VAD,    RGB_MOD,    _______,    _______,    _______,    _______,    _______,     _______,    _______,     _______,    _______,               GAME_MODE,
   _______,    RGB_HUI,    RGB_HUD,    RGB_SPD,    RGB_SPI,    RGB_SAD,    RGB_SAI,    KC_MUTE,    KC_MPRV,     KC_MPLY,    KC_MNXT,     _______,    KC_PGUP,                 _______,
-  _______,    _______,    _______,                                          RESET,                             _______,    _______,     KC_HOME,    KC_PGDN,    KC_END),
+  _______,    _______,    _______,                                  QK_BOOTLOADER,                             _______,    _______,     KC_HOME,    KC_PGDN,    KC_END),
 
 // Standard dvorak
 [_DVORAK] = LAYOUT(
   QK_GESC,       KC_1,       KC_2,       KC_3,       KC_4,       KC_5,       KC_6,       KC_7,       KC_8,        KC_9,       KC_0,     KC_LBRC,    KC_RBRC,    KC_BSPC,      KC_INS,
    KC_TAB,    KC_QUOT,    KC_COMM,     KC_DOT,       KC_P,       KC_Y,       KC_F,       KC_G,       KC_C,        KC_R,       KC_L,     KC_SLSH,     KC_EQL,    KC_BSLS,      KC_DEL,
 CAPS_LOCK,       KC_A,       KC_O,       KC_E,       KC_U,       KC_I,       KC_D,       KC_H,       KC_T,        KC_N,       KC_S,     KC_MINS,     KC_ENT,                  KC_END,
-  KC_LSPO,    KC_SCLN,       KC_Q,       KC_J,       KC_K,       KC_X,       KC_B,       KC_M,       KC_W,        KC_V,       KC_Z,     KC_RSPC,      KC_UP,            LT(7, KC_F5), /*Fn (layer 7) if held or pressed in combo with another key. F5 if tapped.*/
+  SC_LSPO,    KC_SCLN,       KC_Q,       KC_J,       KC_K,       KC_X,       KC_B,       KC_M,       KC_W,        KC_V,       KC_Z,     SC_RSPC,      KC_UP,            LT(7, KC_F5), /*Fn (layer 7) if held or pressed in combo with another key. F5 if tapped.*/
   KC_LCTL,    WIN_KEY,    KC_LALT,                                         KC_SPC,                            MUTE_MIC,    KC_RCTL,     KC_LEFT,    KC_DOWN,    KC_RGHT),
 
 [_FN_FOR_DVORAK] = LAYOUT(
@@ -261,7 +261,7 @@ CAPS_LOCK,       KC_A,       KC_O,       KC_E,       KC_U,       KC_I,       KC_
   _______,    _______,    RGB_VAI,    _______,    _______,    _______,    _______,    _______,    _______,     _______,    KC_PSCR,     _______,    KC_PAUS,    _______,     _______,
   _______,    RGB_RMOD,   RGB_VAD,    RGB_MOD,    _______,    _______,    _______,    _______,    _______,     _______,    _______,     _______,    _______,               GAME_MODE,
   _______,    RGB_HUI,    RGB_HUD,    RGB_SPD,    RGB_SPI,    RGB_SAD,    RGB_SAI,    KC_MUTE,    KC_MPRV,     KC_MPLY,    KC_MNXT,     _______,    KC_PGUP,                 _______,
-  _______,    _______,    _______,                                          RESET,                             _______,    _______,     KC_HOME,    KC_PGDN,     KC_END)
+  _______,    _______,    _______,                                  QK_BOOTLOADER,                             _______,    _______,     KC_HOME,    KC_PGDN,     KC_END)
 };
   
 // Original-ish layouts
