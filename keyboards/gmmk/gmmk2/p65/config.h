@@ -50,6 +50,8 @@
 #define DRIVER_2_LED_TOTAL 34
 #define RGB_MATRIX_LED_COUNT (DRIVER_1_LED_TOTAL + DRIVER_2_LED_TOTAL)
 
+#define RGB_MATRIX_DEFAULT_SPD 10
+
 // RGB Matrix Animation modes. Explicitly enabled
 // For full list of effects, see:
 // https://docs.qmk.fm/#/feature_rgb_matrix?id=rgb-matrix-effects
@@ -102,7 +104,7 @@
 #define ENABLE_RGB_MATRIX_SOLID_MULTISPLASH
 
 /* Set debounce time in ms */
-#define DEBOUNCE 8
+#define DEBOUNCE 20
 
 /* 1 kHz polling interval */
 #define USB_POLLING_INTERVAL_MS 1
