@@ -10,7 +10,11 @@ A customizable number keypad.
 
 Make example for this keyboard (after setting up your build environment):
 
-    make keychron/q0/base:default
+    >> This one: qmk compile -kb keychron/q0/base -km keychron
+	Flash: Hold esc while plugging in. QK_BOOTLOADER seems unreliable? It flashes but doesn't take, even with reboot
+
+	
+	
     make keychron/q0/plus:default
 
 Flashing example for this keyboard:

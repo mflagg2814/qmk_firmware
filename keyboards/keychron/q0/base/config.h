@@ -24,3 +24,7 @@
 
 /* Enable num-lock LED */
 #define NUM_LOCK_LED_INDEX 4
+
+#define RGB_DISABLE_WHEN_USB_SUSPENDED
+#define RGB_MATRIX_DEFAULT_SPD 10
+#define FORCE_NKRO
