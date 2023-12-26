@@ -19,6 +19,14 @@
 
 enum layers { _BASE, _FN1 };
 
+enum user_custom_keycodes {
+	// https://getreuer.info/posts/keyboards/macros/index.html
+	SRCHSEL = SAFE_RANGE,
+	SELLINE,
+	JOINLN,
+	JIGGLE
+};
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_BASE] = LAYOUT_numpad_6x4(
         KC_ESC,   KC_TAB,  KC_BSPC,   MO(_FN1),
@@ -29,12 +37,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_P0,             KC_PDOT,   KC_PENT),
 
     [_FN1] = LAYOUT_numpad_6x4(
-        KC_CALC,    KC_LPRN, KC_RPRN,   _______,
-        RGB_TOG,    RGB_MOD, RGB_RMOD,  RGB_SPD,
-        _______,    _______, _______,
-        _______,    _______, _______,   RGB_SPI,
-        _______,    _______, _______,
-        _______,             _______,   _______)
+        KC_CALC,  KC_LPRN, KC_RPRN,   _______,
+        RGB_TOG,  RGB_MOD, RGB_RMOD,  RGB_SPD,
+        _______,  _______, _______,
+        _______,  _______, _______,   RGB_SPI,
+        SELLINE,  JOINLN,  _______,
+        SRCHSEL,           _______,   JIGGLE)
 };
 
 void housekeeping_task_user(void) {
@@ -45,9 +53,67 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (!process_record_keychron(keycode, record)) {
         return false;
     }
+	
+	if (record->event.pressed) {
+		static deferred_token token = INVALID_DEFERRED_TOKEN;
+		static report_mouse_t report = {0};
+		if (token) {
+		  // If jiggler is currently running, stop when any key is pressed.
+		  cancel_deferred_exec(token);
+		  token = INVALID_DEFERRED_TOKEN;
+		  report = (report_mouse_t){};  // Clear the mouse.
+		  host_mouse_send(&report);
+		} else if (keycode == JIGGLE) {
+		    uint32_t jiggler_callback(uint32_t trigger_time, void* cb_arg) {
+				// Deltas to move in a circle of radius 20 pixels over 32 frames.
+				static const int8_t deltas[32] = {
+					0, -1, -2, -2, -3, -3, -4, -4, -4, -4, -3, -3, -2, -2, -1, 0,
+					0, 1, 2, 2, 3, 3, 4, 4, 4, 4, 3, 3, 2, 2, 1, 0};
+				static uint8_t phase = 0;
+				// Get x delta from table and y delta by rotating a quarter cycle.
+				report.x = deltas[phase];
+				report.y = deltas[(phase + 8) & 31];
+				phase = (phase + 1) & 31;
+				host_mouse_send(&report);
+				return 16;  // Call the callback every 16 ms.
+			}
+
+			token = defer_exec(1, jiggler_callback, NULL);  // Schedule callback.
+		}
+	}
+	
+	switch (keycode) {
+    case SRCHSEL:  // Searches the current selection in a new tab.
+		if (record->event.pressed) {
+			SEND_STRING(SS_LCTL("ct") SS_DELAY(100) SS_LCTL("v") SS_TAP(X_ENTER));
+		}
+		return false;
+	case SELLINE:  // Selects the current line.
+		if (record->event.pressed) {
+			SEND_STRING(SS_TAP(X_HOME) SS_LSFT(SS_TAP(X_END)));
+		}
+		return false;
+	case JOINLN:  // Join lines like Vim's `J` command.
+		if (record->event.pressed) {
+			SEND_STRING( // Go to the end of the line and tap delete.
+				SS_TAP(X_END) SS_TAP(X_DEL)
+				// In case this has joined two words together, insert one space.
+				SS_TAP(X_SPC)
+				SS_LCTL(
+				  // Go to the beginning of the next word.
+				  SS_TAP(X_RGHT) SS_TAP(X_LEFT)
+				  // Select back to the end of the previous word. This should select				 
+				  // all spaces and tabs between the joined lines from indentation
+				  // or trailing whitespace, including the space inserted earlier.
+				  SS_LSFT(SS_TAP(X_LEFT) SS_TAP(X_RGHT)))
+				// Replace the selection with a single space.
+				SS_TAP(X_SPC));
+		}
+		return false;
+	}
+	
     return true;
 }
-
 
 /*
     [_BASE] = LAYOUT_numpad_6x4(
