@@ -24,7 +24,8 @@ enum user_custom_keycodes {
 	SRCHSEL = SAFE_RANGE,
 	SELLINE,
 	JOINLN,
-	JIGGLE
+	JIGGLE,
+	SORTLINES
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -42,7 +43,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,  _______, _______,
         _______,  _______, _______,   RGB_SPI,
         SELLINE,  JOINLN,  _______,
-        SRCHSEL,           _______,   JIGGLE)
+        SORTLINES,           SRCHSEL,   JIGGLE)
 };
 
 void housekeeping_task_user(void) {
@@ -91,6 +92,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 	case SELLINE:  // Selects the current line.
 		if (record->event.pressed) {
 			SEND_STRING(SS_TAP(X_HOME) SS_LSFT(SS_TAP(X_END)));
+		}
+		return false;
+	case SORTLINES:  // Searches the current selection in a new tab.
+		if (record->event.pressed) {
+			SEND_STRING(SS_LCTL(SS_LALT(SS_LSFT("s"))));
 		}
 		return false;
 	case JOINLN:  // Join lines like Vim's `J` command.
