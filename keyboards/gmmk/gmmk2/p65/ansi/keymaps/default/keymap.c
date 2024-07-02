@@ -16,8 +16,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include QMK_KEYBOARD_H
 
-#define _COLEMAK_DHk        0 // keymap 0 is always the default on boot
-#define _FN_FOR_COLEMAK_DHk 1
+#define _COLEMAK_DH         0 // keymap 0 is always the default on boot
+#define _FN_FOR_COLEMAK_DH  1
 #define _QWERTY             2
 #define _FN_FOR_QWERTY      3
 #define _COLEMAK            4 // unused
@@ -47,7 +47,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 		// Toggle game mode and switch to QWERTY
         if (record->event.pressed) {
             IN_GAME_MODE = !IN_GAME_MODE;
-			layer_move( IN_GAME_MODE ? _QWERTY :_COLEMAK_DHk ); // todo save and toggle back to old layout
+			layer_move( IN_GAME_MODE ? _QWERTY :_COLEMAK_DH ); // todo save and toggle back to old layout
         }
         break;
 	/*case F5_KEY:
@@ -203,14 +203,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // https://colemakmods.github.io/mod-dh/keyboards.html
 
 // Default layer
-[_COLEMAK_DHk] = LAYOUT(
+[_COLEMAK_DH] = LAYOUT(
   QK_GESC,       KC_1,       KC_2,       KC_3,       KC_4,       KC_5,       KC_6,       KC_7,       KC_8,        KC_9,       KC_0,     KC_MINS,     KC_EQL,    KC_BSPC,      KC_INS,
    KC_TAB,       KC_Q,       KC_W,       KC_F,       KC_P,       KC_B,       KC_J,       KC_L,       KC_U,        KC_Y,    KC_SCLN,     KC_LBRC,    KC_RBRC,    KC_BSLS,      KC_DEL,
-  KC_BSPC,       KC_A,       KC_R,       KC_S,       KC_T,       KC_G,       KC_K,       KC_N,       KC_E,        KC_I,       KC_O,     KC_QUOT,     KC_ENT,                  KC_END,
-  SC_LSPO,       KC_X,       KC_C,       KC_D,       KC_V,       KC_Z,       KC_M,       KC_H,    KC_COMM,      KC_DOT,    KC_SLSH,     SC_RSPC,      KC_UP,            LT(1, KC_F5), /*Fn (layer 1) if held or pressed in combo with another key. F5 if tapped.*/
+  KC_BSPC,       KC_A,       KC_R,       KC_S,       KC_T,       KC_G,       KC_M,       KC_N,       KC_E,        KC_I,       KC_O,     KC_QUOT,     KC_ENT,                  KC_END,
+  SC_LSPO,       KC_X,       KC_C,       KC_D,       KC_V,       KC_Z,       KC_K,       KC_H,    KC_COMM,      KC_DOT,    KC_SLSH,     SC_RSPC,      KC_UP,            LT(1, KC_F5), /*Fn (layer 1) if held or pressed in combo with another key. F5 if tapped.*/
   KC_LCTL,    WIN_KEY,       KC_LALT,                                      KC_SPC,                            MUTE_MIC,    KC_RCTL,     KC_LEFT,    KC_DOWN,    KC_RGHT),
 
-[_FN_FOR_COLEMAK_DHk] = LAYOUT(
+[_FN_FOR_COLEMAK_DH] = LAYOUT(
    KC_GRV,      KC_F1,      KC_F2,      KC_F3,      KC_F4,      KC_F5,      KC_F6,      KC_F7,      KC_F8,       KC_F9,     KC_F10,      KC_F11,     KC_F12,    _______,       TO(2), /*switch to layer 2*/
   _______,    _______,    RGB_VAI,    _______,    _______,    _______,    _______,    _______,    _______,     _______,    KC_PSCR,     _______,    KC_PAUS,    _______,  HDR_TOGGLE,
   _______,    RGB_RMOD,   RGB_VAD,    RGB_MOD,    _______,    _______,    _______,    _______,    _______,     _______,    _______,     _______,    _______,               GAME_MODE,
