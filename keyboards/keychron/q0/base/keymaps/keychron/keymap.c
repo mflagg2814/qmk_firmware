@@ -31,11 +31,11 @@ enum user_custom_keycodes {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_BASE] = LAYOUT_numpad_6x4(
         KC_ESC,   KC_TAB,  KC_BSPC,   MO(_FN1),
-        KC_NUM,   KC_PSLS, KC_PAST,   KC_PMNS,
-        KC_P7,    KC_P8,   KC_P9,
-        KC_P4,    KC_P5,   KC_P6,     KC_PPLS,
-        KC_P1,    KC_P2,   KC_P3,
-        KC_P0,             KC_PDOT,   KC_PENT),
+        KC_NO,   KC_PSLS, KC_PAST,   KC_PMNS,
+        KC_7,    KC_8,   KC_9,
+        KC_4,    KC_5,   KC_6,     KC_PPLS,
+        KC_1,    KC_2,   KC_3,
+        KC_0,             KC_DOT,   KC_ENT),
 
     [_FN1] = LAYOUT_numpad_6x4(
         KC_CALC,  KC_LPRN, KC_RPRN,   _______,
@@ -54,7 +54,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (!process_record_keychron(keycode, record)) {
         return false;
     }
-	
+
 	if (record->event.pressed) {
 		static deferred_token token = INVALID_DEFERRED_TOKEN;
 		static report_mouse_t report = {0};
@@ -82,7 +82,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 			token = defer_exec(1, jiggler_callback, NULL);  // Schedule callback.
 		}
 	}
-	
+
 	switch (keycode) {
     case SRCHSEL:  // Searches the current selection in a new tab.
 		if (record->event.pressed) {
@@ -108,7 +108,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 				SS_LCTL(
 				  // Go to the beginning of the next word.
 				  SS_TAP(X_RGHT) SS_TAP(X_LEFT)
-				  // Select back to the end of the previous word. This should select				 
+				  // Select back to the end of the previous word. This should select
 				  // all spaces and tabs between the joined lines from indentation
 				  // or trailing whitespace, including the space inserted earlier.
 				  SS_LSFT(SS_TAP(X_LEFT) SS_TAP(X_RGHT)))
@@ -117,7 +117,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 		}
 		return false;
 	}
-	
+
     return true;
 }
 
@@ -137,7 +137,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         RGB_SAI,    RGB_SPI, KC_MPRV,   _______,
         RGB_SAD,    RGB_SPD, KC_MPLY,
         RGB_TOG,             KC_MNXT,   _______),
-		
+
 	    [_RESERVED1] = LAYOUT_numpad_6x4(
         _______,    _______, _______,   _______,
         _______,    _______, _______,   _______,
