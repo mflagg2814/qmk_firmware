@@ -55,7 +55,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 		if (IN_GAME_MODE) {
 			break;
 		}
-	
+
         if (record->event.pressed) {
             register_code(KC_F5);
         } else {
@@ -67,7 +67,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 		if (IN_GAME_MODE) {
 			break;
 		}
-	
+
         if (record->event.pressed) {
             register_code(KC_LCTL);
             register_code(KC_LSFT);
@@ -83,7 +83,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 		if (IN_GAME_MODE) {
 			break;
 		}
-	
+
         if (record->event.pressed) {
             register_code(KC_LCTL);
             register_code(KC_LSFT);
@@ -99,7 +99,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 		if (IN_GAME_MODE) {
 			break;
 		}
-	
+
         if (record->event.pressed) {
             register_code(KC_LGUI);
         } else {
@@ -121,7 +121,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 		if (IN_GAME_MODE) {
 			break;
 		}
-	
+
 		// Macro to enable HDR mode in Windows
         if (record->event.pressed) {
             register_code(KC_LGUI);
@@ -141,15 +141,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 // Fancy callback that allows overriding current RGB effect
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 	const uint8_t caps_key_idx = 30;
-	
+
 	const uint8_t hdr_key_idx = 29;
 	const uint8_t game_mode_key_idx = 43;
 	//const uint8_t task_mgr_key_idx = 57;
 	const uint8_t win_key_idx = 59;
 	const uint8_t mute_mic_key_idx = 62;
-	
+
 	const uint8_t qwerty_toggle_key_idx = 14;
-	
+
 	// Flash the caps lock key if enabled
     if (host_keyboard_led_state().caps_lock) {
 		// time in ms
@@ -161,7 +161,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 			CAPS_LOCK_FLASH_TIMER = timer_read32(); // reset timer
 		}
     }
-	
+
 	// Turn game mode toggle key and affected keys white if enabled
 	if (IN_GAME_MODE) {
 		RGB_MATRIX_INDICATOR_SET_COLOR(hdr_key_idx, 0xFF, 0xFF, 0xFF);
@@ -170,13 +170,13 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 		RGB_MATRIX_INDICATOR_SET_COLOR(win_key_idx, 0xFF, 0xFF, 0xFF);
 		RGB_MATRIX_INDICATOR_SET_COLOR(mute_mic_key_idx, 0xFF, 0xFF, 0xFF);
 	}
-	
+
 	// Turn QWERTY toggle key white if in QWERTY mode
-	const uint32_t current_layer = biton32(layer_state);	
+	const uint32_t current_layer = biton32(layer_state);
 	if (current_layer == _QWERTY || current_layer == _FN_FOR_QWERTY) {
 		RGB_MATRIX_INDICATOR_SET_COLOR(qwerty_toggle_key_idx, 0xFF, 0xFF, 0xFF);
 	}
-	
+
 	return true;
 }
 
@@ -215,7 +215,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______,    _______,    RGB_VAI,    _______,    _______,    _______,    _______,    _______,    _______,     _______,    KC_PSCR,     _______,    KC_PAUS,    _______,  HDR_TOGGLE,
   _______,    RGB_RMOD,   RGB_VAD,    RGB_MOD,    _______,    _______,    _______,    _______,    _______,     _______,    _______,     _______,    _______,               GAME_MODE,
   _______,    RGB_HUI,    RGB_HUD,    RGB_SPD,    RGB_SPI,    RGB_SAD,    RGB_SAI,    KC_MUTE,    KC_MPRV,     KC_MPLY,    KC_MNXT,     _______,    KC_PGUP,                 _______,
-  _______,    _______,    _______,                                  QK_BOOTLOADER,                             _______,    _______,     KC_HOME,    KC_PGDN,    KC_END),     
+  _______,    _______,    _______,                                  QK_BOOTLOADER,                             _______,    _______,     KC_HOME,    KC_PGDN,    KC_END),
 
 // QWERTY
 [_QWERTY] = LAYOUT(
@@ -224,7 +224,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 CAPS_LOCK,       KC_A,       KC_S,       KC_D,       KC_F,       KC_G,       KC_H,       KC_J,       KC_K,        KC_L,    KC_SCLN,     KC_QUOT,     KC_ENT,                  KC_END,
   SC_LSPO,       KC_Z,       KC_X,       KC_C,       KC_V,       KC_B,       KC_N,       KC_M,    KC_COMM,      KC_DOT,    KC_SLSH,     SC_RSPC,      KC_UP,            LT(3, KC_F5), /*Fn (layer 3) if held or pressed in combo with another key. F5 if tapped.*/
   KC_LCTL,    WIN_KEY,       KC_LALT,                                      KC_SPC,                            MUTE_MIC,    KC_RCTL,     KC_LEFT,    KC_DOWN,    KC_RGHT),
-  
+
 [_FN_FOR_QWERTY] = LAYOUT(
    KC_GRV,      KC_F1,      KC_F2,      KC_F3,      KC_F4,      KC_F5,      KC_F6,      KC_F7,      KC_F8,       KC_F9,     KC_F10,      KC_F11,     KC_F12,    _______,       TO(0), /*switch to layer 0*/
   _______,    _______,    RGB_VAI,    _______,    _______,    _______,    _______,    _______,    _______,     _______,    KC_PSCR,     _______,    KC_PAUS,    _______,  HDR_TOGGLE,
@@ -263,7 +263,7 @@ CAPS_LOCK,       KC_A,       KC_O,       KC_E,       KC_U,       KC_I,       KC_
   _______,    RGB_HUI,    RGB_HUD,    RGB_SPD,    RGB_SPI,    RGB_SAD,    RGB_SAI,    KC_MUTE,    KC_MPRV,     KC_MPLY,    KC_MNXT,     _______,    KC_PGUP,                 _______,
   _______,    _______,    _______,                                  QK_BOOTLOADER,                             _______,    _______,     KC_HOME,    KC_PGDN,     KC_END)
 };
-  
+
 // Original-ish layouts
 /*
 [0] = LAYOUT(
@@ -284,8 +284,9 @@ CAPS_LOCK,       KC_A,       KC_O,       KC_E,       KC_U,       KC_I,       KC_
   _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,   _______,  _______,
   _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,   _______,  _______,
   _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,             _______,
-  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,   _______,  _______,
-  _______,  _______,  _______,                                _______,                                _______,  _______,  _______,   _______,  _______)
+  _______,  RM_HUEU,  RM_HUED,  RM_SPDD,  RM_SPDU,  KC_MUTE,  KC_VOLD,  KC_VOLU,  KC_MPRV,  KC_MPLY,  KC_MNXT,  _______,             RM_VALU,  KC_HOME,
+  _______,  _______,  _______,                                QK_BOOT,                                _______,  _______,  RM_PREV,   RM_VALD,  RM_NEXT
+  )
 };
 */
 
